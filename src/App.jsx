@@ -37,7 +37,7 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      location: "lisbon",
+      location: "",
       isLoading: false,
       displayLocation: "",
       weather: {},
@@ -75,6 +75,21 @@ class App extends React.Component {
       this.setState({ isLoading: false });
     }
   }
+  // useEffect []
+  componentDidMount() {
+    // this.fetchWeather();
+
+    this.setState({ location: localStorage.getItem("location") || "" });
+  }
+
+  // useEffect [location]
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.location !== prevState.location) {
+      this.fetchweather();
+
+      localStorage.setItem("location", this.state.location);
+    }
+  }
   render() {
     return (
       <div className="app">
@@ -104,6 +119,9 @@ class App extends React.Component {
 export default App;
 
 class Weather extends React.Component {
+  componentWillUnmount() {
+    console.log("Weather will unmount");
+  }
   render() {
     const {
       temperature_2m_max: max,
